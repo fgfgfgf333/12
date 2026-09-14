@@ -1,0 +1,33 @@
+local platform = Instance.new("Part")
+platform.Name = "VoidSafePlatform"
+platform.Size = Vector3.new(10000, 10, 10000) -- 10000x10000面积
+platform.Position = Vector3.new(140.10, -1996.75, -65.15)
+platform.Anchored = true
+platform.CanCollide = true
+platform.Transparency = 1 -- 完全透明
+platform.Material = Enum.Material.ForceField
+platform.Parent = workspace
+
+-- 防止玩家掉落死亡（保护区域）
+local Players = game:GetService("Players")
+
+local function protectCharacter(character)
+	local humanoid = character:WaitForChild("Humanoid")
+	
+	humanoid.Died:Connect(function()
+		-- 可在这里添加复活逻辑
+	end)
+end
+
+Players.PlayerAdded:Connect(function(player)
+	player.CharacterAdded:Connect(protectCharacter)
+end)
+
+-- 已存在玩家
+for _,player in pairs(Players:GetPlayers()) do
+	if player.Character then
+		protectCharacter(player.Character)
+	end
+end
+
+print("10000x10000透明防虚空平台已生成")
